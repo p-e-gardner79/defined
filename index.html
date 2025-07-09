@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC vs. DB Pension Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+       
+</head>
+<body class="bg-gray-custom text-dark-blue">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-dark-blue">Pension Comparison Calculator</h1>
+            <p class="mt-2 text-lg text-gray-600">Understand the difference between Defined Contribution (DC) and Defined Benefit (DB) pensions.</p>
+        </header>
+
+        <!-- Warning Note -->
+        <div class="p-4 rounded-[10px] mb-8" style="background-color: #eaf7f5; border: 1px solid #54bbab; color: #2c6b60;" role="alert">
+            <div class="flex">
+                <div class="py-1"><svg class="fill-current h-6 w-6 mr-4" style="color: #54bbab;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM9 5v6h2V5H9zm0 8h2v-2H9v2z"/></svg></div>
+                <div>
+                    <p class="font-bold">For Illustrative Purposes Only</p>
+                    <p class="text-sm">This calculator is designed to help you understand how both types of pension work. To get an accurate projection of your defined benefit income, please visit PensionPoint and use the calculators there.</p>
+                    <a href="#" class="shine-button">Visit PensionPoint</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explanations Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="card p-6 text-gray-100" style="background-color: #183850;">
+                <h3 class="text-2xl font-bold mb-3">Defined Contribution (DC) Pension</h3>
+                <p class="text-gray-200">Think of this as your personal pension savings pot. You and your employer contribute money, which is then invested to grow over time. The final amount you get at retirement depends on how much was paid in and how well the investments have performed. You have flexibility in how you access this money when you retire.</p>
+            </div>
+            <div class="card p-6 text-dark-blue" style="background-color: #82cff4;">
+                <h3 class="text-2xl font-bold text-dark-blue mb-3">Defined Benefit (DB) Pension</h3>
+                <p>This type of pension promises to pay you a specific, guaranteed income for the rest of your life once you retire. The amount is calculated using a formula based on your salary (often your final or average salary) and the number of years you've been in the scheme. The investment risk is managed by your employer.</p>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Input Section -->
+            <div class="lg:col-span-1">
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-6 text-dark-blue">Your Details</h2>
+                    
+                    <div class="input-group">
+                        <label for="currentAge">Current Age</label>
+                        <input type="number" id="currentAge" value="30">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="retirementAge">Planned Retirement Age</label>
+                        <input type="number" id="retirementAge" value="67">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="salary">Current Annual Salary (£)</label>
+                        <input type="number" id="salary" value="50000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="salaryGrowth">Annual Salary Growth Rate (%)</label>
+                        <input type="number" id="salaryGrowth" value="2.5">
+                    </div>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <!-- Tabs for DC/DB -->
+                    <div class="flex justify-center mb-4 bg-gray-custom p-1 rounded-lg">
+                        <button id="dcTab" class="tab-button active w-1/2">DC Pension</button>
+                        <button id="dbTab" class="tab-button w-1/2">DB Pension</button>
+                    </div>
+
+                    <!-- DC Inputs -->
+                    <div id="dcInputs">
+                        <h3 class="text-xl font-semibold mb-4 text-dark-blue flex items-center">
+                            Defined Contribution
+                            <div class="tooltip">
+                                <svg class="info-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span class="tooltiptext">A pension pot that grows based on contributions and investment returns. You decide how to take the money at retirement.</span>
+                            </div>
+                        </h3>
+                        <div class="input-group">
+                            <label for="dcPot">Current Pension Pot (£)</label>
+                            <input type="number" id="dcPot" value="25000">
+                        </div>
+                        <div class="input-group">
+                            <label for="dcContribution">Your Annual Contribution (%)</label>
+                            <input type="number" id="dcContribution" value="5">
+                        </div>
+                        <div class="input-group">
+                            <label for="dcEmployerContribution">Employer Annual Contribution (%)</label>
+                            <input type="number" id="dcEmployerContribution" value="3">
+                        </div>
+                        <div class="input-group">
+                            <label for="investmentGrowth">Annual Investment Growth (%)</label>
+                            <input type="number" id="investmentGrowth" value="5">
+                        </div>
+                    </div>
+
+                    <!-- DB Inputs -->
+                    <div id="dbInputs" class="hidden">
+                        <h3 class="text-xl font-semibold mb-4 text-dark-blue flex items-center">
+                            Defined Benefit
+                             <div class="tooltip">
+                                <svg class="info-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span class="tooltiptext">A pension that pays a guaranteed annual income in retirement, based on your salary and years of service.</span>
+                            </div>
+                        </h3>
+                        <div class="input-group">
+                            <label for="dbServiceYears">Years in DB Scheme at Retirement</label>
+                            <input type="number" id="dbServiceYears" value="20">
+                        </div>
+                        <div class="input-group">
+                            <label for="dbAccrualRate">Accrual Rate (e.g., 80 for 1/80th)</label>
+                            <input type="number" id="dbAccrualRate" value="80">
+                        </div>
+                        <div class="input-group">
+                            <label for="dbSchemeType">Salary Basis</label>
+                            <select id="dbSchemeType">
+                                <option value="final">Final Salary</option>
+                                <option value="care">Career Average (CARE)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output/Graph Section -->
+            <div class="lg:col-span-2">
+                <div class="card h-full">
+                    <h2 class="text-2xl font-semibold mb-2 text-dark-blue">Projected Outcomes</h2>
+                    <p class="text-gray-500 mb-6">These are estimates. The actual amounts can vary.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-center">
+                        <div class="p-4 bg-gray-custom rounded-[10px]">
+                            <h3 class="text-lg font-semibold text-dark-blue">DC Pension Pot at Retirement</h3>
+                            <p id="dcResult" class="text-3xl font-bold text-brand-blue mt-2">£0</p>
+                        </div>
+                        <div class="p-4 bg-gray-custom rounded-[10px]">
+                            <h3 class="text-lg font-semibold text-dark-blue">DB Annual Income at Retirement</h3>
+                            <p id="dbResult" class="text-3xl font-bold text-brand-teal mt-2">£0 / year</p>
+                        </div>
+                    </div>
+
+                    <!-- Chart Container: Grid for side-by-side layout on large screens -->
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                        <div id="dcChartWrapper">
+                            <h3 class="text-xl font-semibold text-dark-blue mb-4 text-center">DC Pension Pot Growth</h3>
+                            <div class="relative h-80">
+                                <canvas id="dcGrowthChart"></canvas>
+                            </div>
+                        </div>
+                        <div id="dbChartWrapper" class="hidden">
+                             <h3 class="text-xl font-semibold text-dark-blue mb-4 text-center">DB Annual Income Accrual</h3>
+                            <div class="relative h-80">
+                                <canvas id="dbGrowthChart"></canvas>
+                            </div>
+                        </div>
+                        <div id="incomeChartWrapper">
+                            <h3 class="text-xl font-semibold text-dark-blue mb-4 text-center">Comparing Annual Retirement Income</h3>
+                            <div class="relative h-80">
+                                <canvas id="incomeComparisonChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+   
+</body>
+</html>
